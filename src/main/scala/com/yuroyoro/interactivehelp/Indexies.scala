@@ -57,7 +57,7 @@ object Indexies{
    * 一致したものを返す。
    * 複数一致する場合は一覧を返す。
    */
-  def h(name:String)= {
+  def h(name:String):Document = {
     result( name,
       classIndexies.filter( i=> i.name == name || i.fqcn == name ) ++
       objectIndexies.filter( i => i.name == name || i.fqcn == name ) ++
@@ -65,29 +65,31 @@ object Indexies{
     )
   }
 
-  def oh( name:String ) =
+  def oh( name:String ):Document =
     result( name, objectIndexies.filter( i => i.name == name || i.fqcn == name ) )
 
-  def ch( name:String ) =
+  def ch( name:String ):Document =
     result( name, objectIndexies.filter( i => i.name == name || i.fqcn == name ) )
 
-  def ph( name:String ) =
+  def ph( name:String ):Document =
     result( name, objectIndexies.filter( i => i.name == name || i.fqcn == name ) )
 
-  def result( name:String, res:Seq[Document] ) = {
+  def result( name:String, res:Seq[Document] ):Document = {
     res size match {
-      case 0 => "not found:%s" format name
+      case 0 => NoneDocument( name )
       case 1 => res.first
       case _ => new IndexSeq( res )
     }
   }
 
-  def fromPath( path:String, name:String) = {
+  def fromPath( path:String, name:String):Document  = {
     val cn = fqcn( path, name)
-    (if( isObject( path ) ) objectIndexies.filter( _.fqcn == name )
-     else classIndexies.filter( _.fqcn == name )) match{
+    println( "fromPath %s %s %s".format( path, name, cn))
+    (if( isObject( path ) ) objectIndexies.filter( _.fqcn == cn)
+     else classIndexies.filter( _.fqcn == cn)) match{
       case x::_ => x
-      case Nil => null
+      case Nil => NoneDocument( name )
+      case _ => NoneDocument( name )
     }
   }
 }
@@ -99,6 +101,43 @@ trait Document {
   val loader = Indexies.loader
   def apply(i:Int):Document
   def apply(name:String):Document
+
+  def s:Document = NoneDocument( "Super class")
+  def superClass:Document = s
+
+  def et:Document = NoneDocument( "Super class")
+  def extendsTree = et
+
+  def v:Document= NoneDocument( "Values and Variables")
+  def v(i:Int):Document= NoneDocument( "Values and Variables")
+  def v(name:String):Document= NoneDocument( "Values and Variables")
+  def values = v
+  def value(i:Int) = v(i)
+  def value(name:String) = v(name)
+
+  def m:Document= NoneDocument( "Methods")
+  def m(i:Int):Document = NoneDocument( "Methods")
+  def m(name:String):Document = NoneDocument( "Methods")
+  def methods = m
+  def method(i:Int) = m(i)
+  def method(name:String) = m(name)
+
+  def r:Document = NoneDocument("return type")
+  def returnType = r
+
+  def t:Document = NoneDocument( "traits")
+  def t(i:Int):Document = NoneDocument( "traits")
+  def t(name:String):Document = NoneDocument( "traits")
+  def traits = t
+  def traits(i:Int) = t(i)
+  def traits(name:String) = t(name)
+}
+
+case class NoneDocument( name:String) extends Document{
+  def kind:String = ""
+  def desc:String = "not found " + name
+  def apply(i:Int):Document = this
+  def apply(name:String):Document = this
 }
 
 class IndexSeq( theSeq:Seq[Document])
