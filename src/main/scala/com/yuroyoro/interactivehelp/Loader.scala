@@ -23,7 +23,10 @@ object DocumentLoader{
 
 abstract case class DocumentLoader {
   def source( relPath:String ):Source
-  def loadXml( relPath:String ):NodeSeq = XhtmlParser( source( relPath ) )
+  def loadXml( relPath:String ):NodeSeq = {
+    //println( "load file : " + relPath )
+    XhtmlParser( source( relPath ) )
+  }
 }
 
 case class FileDocumentLoader( docHome:String) extends DocumentLoader{

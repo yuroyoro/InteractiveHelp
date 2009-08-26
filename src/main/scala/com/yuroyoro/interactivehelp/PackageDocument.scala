@@ -1,9 +1,12 @@
 package com.yuroyoro.interactivehelp
 
+import Util._
+
 case class PackageDocument(name:String, path:String ) extends Document {
 
   def desc = name
   def kind = "Package"
+  def fqcn = name
   lazy val xml = loader.loadXml( path )
 
   val classes =
@@ -24,4 +27,5 @@ case class PackageDocument(name:String, path:String ) extends Document {
 
   def apply(i:Int):Document = null // TODO
   def apply(name:String):Document = null // TODO
+  def apply(name:Symbol):Document = null //TODO m(name)
 }

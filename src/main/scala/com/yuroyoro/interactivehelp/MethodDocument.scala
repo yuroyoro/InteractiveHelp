@@ -11,4 +11,6 @@ case class MethodSeq( theSeq:Seq[MethodDoc] )
   //override def apply(i: Int):MethodDoc = theSeq.apply(i)
 
 }
-case class MethodDoc( xml:NodeSeq ) //extends ScalaDoc
+case class MethodDoc( sXml:NodeSeq, dXml:NodeSeq )
+  //extends ScalaDoc{
+//}

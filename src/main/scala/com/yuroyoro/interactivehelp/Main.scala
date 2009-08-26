@@ -8,8 +8,5 @@ object Main {
     MainGenericRunner.main( args ++ Array("-i" , "import.scala"))
     exit(0)
   }
-
-  def h(name:String) = Indexies.h( name )
-
 }
 
