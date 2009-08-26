@@ -1,11 +1,35 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.yuroyoro</groupId>
   <artifactId>interactive-help</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.5</version>
   <packaging>jar</packaging>
   <name>InteractiveHelp</name>
+  <description>
+Interactive-help offers the function to retrieve scaladoc on the scala interpreter.
+  </description>
+  <licenses>
+    <license>
+      <name>the Apache License, ASL Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>yuroyoro</id>
+      <name>Tomohito Ozaki</name>
+      <timezone>+9</timezone>
+      <email>helmettomo [at] gmail.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git://github.com/yuroyoro/InteractiveHelp.git</connection>
+    <developerConnection>scm:git:git@github.com:yuroyoro/InteractiveHelp.git</developerConnection>
+    <url>http://github.com/yuroyoro/InteractiveHelp/tree/master</url>
+  </scm>
+
   <properties>
     <scala.version>2.7.5</scala.version>
   </properties>
@@ -23,6 +47,17 @@
       <id>scala-tools.org</id>
       <name>Scala-Tools Maven2 Repository</name>
       <url>http://scala-tools.org/repo-releases</url>
+    </pluginRepository>
+    <pluginRepository>
+        <id>mc-release</id>
+        <name>Local Maven repository of releases</name>
+        <url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
     </pluginRepository>
   </pluginRepositories>
 
@@ -67,6 +102,43 @@
         </executions>
         <configuration>
           <scalaVersion>${scala.version}</scalaVersion>
+        </configuration>
+      </plugin>
+      <plugin>
+        <inherited>true</inherited>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.google.code.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <version>1.4.0</version>
+        <configuration>
+          <header>src/header.txt</header>
+          <mapping>
+            <scala>JAVADOC_STYLE</scala>
+          </mapping>
+          <includes>
+            <include>src/**/*.scala</include>
+          </includes>
+          <executions>
+              <execution>
+                  <goals>
+                      <goal>check</goal>
+                  </goals>
+              </execution>
+          </executions>
+          <encoding>UTF-8</encoding>
+          <headerDefinitions>
+            <headerDefinition>src/header-definition.xml</headerDefinition>
+          </headerDefinitions>
         </configuration>
       </plugin>
     </plugins>
