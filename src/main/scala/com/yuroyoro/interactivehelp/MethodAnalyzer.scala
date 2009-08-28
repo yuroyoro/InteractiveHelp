@@ -15,9 +15,24 @@
  */
 package com.yuroyoro.interactivehelp
 
-import _root_.scala.xml._
+import _root_.scala.xml.NodeSeq
 import Util._
+import AnalyaerUtil._
 
-object ValueAnalizer {
+object MethodAnalyaer{
+  def apply( xml:NodeSeq , fqcn:String ):Document = {
+    val sum = getMemberSummary( xml , "Method")
+    val det = getMemberDetail( xml, "Method")
+    val res = sum.zip( det ).map( t  =>{
+      val s = t._1
+      val d = t._2
+      val sig = getSignature( s )
+      val header = getSummaryDescription( s )
+      val ( name, path, param, ret ) = analizeMethodSigniture( s )
+      val detail = getDetailDescription( d )
+      MethodDoc( fqcn, path, name, sig, header, detail, ret, param )
+    })
 
+    listToDocument( res , "method" )
+  }
 }

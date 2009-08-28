@@ -18,7 +18,7 @@ package com.yuroyoro.interactivehelp
 import _root_.scala.xml._
 import Util._
 
-object AnalizerUtil {
+object AnalyaerUtil {
   def getWith( n:List[Node] ):List[Node] = n match {
       case x::Nil => Nil
       case x::xs  => if( x.text.trim == "with") xs else getWith(xs )

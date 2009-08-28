@@ -17,9 +17,9 @@ package com.yuroyoro.interactivehelp
 
 import _root_.scala.xml._
 import Util._
-import AnalizerUtil._
+import AnalyaerUtil._
 
-object ClassAnalizer {
+object ClassAnalyaer {
 
   def apply( path:String ):(
        String,     // class description
@@ -112,7 +112,7 @@ object ClassAnalizer {
       analizeSubClasses( xml ),
       analizeTrait( xml ),
       analizeValues( xml , fqcn ),
-      MethodAnalizer( xml , fqcn )
+      MethodAnalyaer( xml , fqcn )
     )
   }
 }

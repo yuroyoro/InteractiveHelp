@@ -26,7 +26,7 @@ trait ScalaDoc extends Document {
        traitsDocs,  // tarit classes documents
        valueDocs,   // values documents
        methodDocs   // methods documents
-   ) =  ClassAnalizer( path )
+   ) =  ClassAnalyaer( path )
 
   def displayString = header
 
