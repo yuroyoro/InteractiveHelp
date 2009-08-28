@@ -30,6 +30,9 @@ trait ScalaDoc extends Document {
 
   def displayString = header
 
+  override def length = m.toSeq.length
+  override def elements = m.toSeq.elements
+
   def apply(i:Int) = m(i)
   def apply(name:String) = m(name)
   def apply(name:Symbol):Document = m(name)

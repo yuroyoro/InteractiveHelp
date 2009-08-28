@@ -28,6 +28,9 @@ case class PackageDocument(name:String, path:String ) extends Document {
 
   lazy val classes  = PackageAnalyzer( xml )
 
+  override def length = classes.toSeq.length
+  override def elements = classes.toSeq.elements
+
   def apply(i:Int):Document = classes(i)
   def apply(name:String):Document = classes( name )
   def apply(name:Symbol):Document = classes( name )

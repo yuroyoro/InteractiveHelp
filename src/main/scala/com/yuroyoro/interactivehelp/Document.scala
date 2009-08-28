@@ -17,10 +17,13 @@ package com.yuroyoro.interactivehelp
 
 import Util._
 
-trait Document {
+trait Document extends Seq[Document] {
+  def length = 0
+  def elements = Seq[Document]().elements
   def kind:String
   def desc:String
   def fqcn:String
+  def name:String
   def shortDesc = "%s %s".format( kind, desc )
   def displayString:String
   override def toString = {
@@ -84,15 +87,15 @@ case class NoneDocument( name:String) extends Document{
   def apply(name:Symbol):Document = this
 }
 
-class DocumentSeq( theSeq:Seq[Document])
-  extends Seq[Document] with Document {
+class DocumentSeq( theSeq:Seq[Document]) extends Document {
 
   def kind:String = "Seq"
   def desc:String = "found %d".format( theSeq.size )
   def fqcn:String = ""
+  override def name = desc
   val indent = "\n  "
-  def length = theSeq.length
-  def elements = theSeq.elements
+  override def length = theSeq.length
+  override def elements = theSeq.elements
   def apply(i:Int):Document = theSeq.apply(i)
   def apply(name:String):Document = searchDocument(this, name)
   def apply(name:Symbol):Document = null // TODO
