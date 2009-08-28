@@ -24,7 +24,7 @@ trait Document {
   def shortDesc = "%s %s".format( kind, desc )
   def displayString:String
   override def toString = {
-    println( displayString )
+    println( trimCr( displayString ) )
     kind
   }
   def apply(i:Int):Document

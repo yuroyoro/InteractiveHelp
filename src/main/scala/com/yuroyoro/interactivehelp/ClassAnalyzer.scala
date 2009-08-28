@@ -17,9 +17,9 @@ package com.yuroyoro.interactivehelp
 
 import _root_.scala.xml._
 import Util._
-import AnalyaerUtil._
+import AnalyzerUtil._
 
-object ClassAnalyaer {
+object ClassAnalyzer {
 
   def apply( path:String ):(
        String,     // class description
@@ -34,12 +34,12 @@ object ClassAnalyaer {
 
     def makeDefinition( xml:NodeSeq ):String = {
       val definitions = (xml \ "body" \ "dl").first
-      val sig = (definitions \ "dt").text.trim.split("\n").map(_.trim).mkString(" ")
+      val sig = (definitions \ "dt").text.trim.lines.map(_.trim).mkString(" ")
       val ext = (definitions \ "dd").text.trim
-      val description = (xml \ "body" \ "dl").drop(1) match{
+      val description = trimCr( (xml \ "body" \ "dl").drop(1) match{
         case x::_ => x text
         case _ => ""
-      }
+      })
       val startLine = "=== %s =========================================================".
         format( fqcn ).take(65)
 """
@@ -93,26 +93,14 @@ object ClassAnalyaer {
       listToDocument( sc , "tratis")
     }
 
-    def analizeValues( xml:NodeSeq , fqcn:String):Document = {
-      val valueSum = for( t <- xml \ "body" \ "table";
-          if t \ "@class" == "member";
-          if (t \ "tr" \ "td" first).text.trim == "Value Summary")yield{
-        ( t \\ "tr").toList.tail}
-
-      val valueDet = for( t <- xml \ "body" \ "table";
-          if t \ "@class" == "member-detail";
-          if (t \ "tr" \ "td" first).text.trim == "Value Details")yield{t}
-
-      new DocumentSeq(Nil)
-    }
-
+    // return tuple
     ( makeDefinition( xml ),
       analizeInherited( xml ),
       analizeExtends( xml ),
       analizeSubClasses( xml ),
       analizeTrait( xml ),
-      analizeValues( xml , fqcn ),
-      MethodAnalyaer( xml , fqcn )
+      ValueAnalyzer( xml , fqcn ),
+      MethodAnalyzer( xml , fqcn )
     )
   }
 }

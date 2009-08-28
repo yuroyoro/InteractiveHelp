@@ -17,7 +17,22 @@ package com.yuroyoro.interactivehelp
 
 import _root_.scala.xml._
 import Util._
+import AnalyzerUtil._
 
-object ValueAnalyaer {
+object ValueAnalyzer {
+  def apply( xml:NodeSeq, fqcn:String ):Document = {
+    val sum = getMemberSummary( xml , "Value")
+    val det = getMemberDetail( xml, "Value")
+    val res = sum.zip( det ).map( t  =>{
+      val s = t._1
+      val d = t._2
+      val sig = getSignature( s )
+      val header = getSummaryDescription( s )
+      val ( name, path, param, ret ) = analizeMethodSigniture( s )
+      val detail = getDetailDescription( d )
+      ValueDoc( fqcn, path, name, sig, header, detail, ret )
+    })
 
+    listToDocument( res , "value" )
+  }
 }

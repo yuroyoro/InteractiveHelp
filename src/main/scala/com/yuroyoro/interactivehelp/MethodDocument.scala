@@ -30,7 +30,7 @@ case class MethodDoc(
 ) extends Document {
   def kind:String = "Method"
   override def shortDesc = "%s\n  %s\n".format( sig , header )
-  def displayString:String = shortDesc
+  def displayString:String = desc
 
   override def apply(i:Int):Document = this
   override def apply(name:String):Document = this

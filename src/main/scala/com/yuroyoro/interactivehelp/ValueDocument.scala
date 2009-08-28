@@ -17,17 +17,30 @@ package com.yuroyoro.interactivehelp
 
 import _root_.scala.xml._
 import Util._
-import AnalyzerUtil._
 
-object PackageAnalyzer {
-  def apply( xml:NodeSeq ):Document = {
+case class ValueDoc(
+  fqcn:String,
+  path:String,
+  name:String,
+  sig:String,
+  header:String,
+  desc:String,
+  valueClass:Document
+) extends Document {
+  def kind:String = "Value"
+  override def shortDesc = "%s\n  %s\n".format( sig , header )
+  def displayString:String = desc
 
-    def fromSum( s:Node ):Document = fromATag( ( s \\ "a").first )
+  override def apply(i:Int):Document = this
+  override def apply(name:String):Document = this
+  override def apply(name:Symbol):Document = this
 
-    val res =
-        getMemberSummary( xml , "Object").map( s => fromSum( s ) ):::
-        getMemberSummary( xml , "Class").map( s => fromSum( s ) )
+  override def v:Document= this
+  override def v(i:Int):Document= this
+  override def v(name:String):Document= this
 
-    listToDocument( res , "value" )
-  }
+  override def r:Document = valueClass
+
+  override def o():Unit = openUrl( path )
+
 }

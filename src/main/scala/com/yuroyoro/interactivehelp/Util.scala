@@ -78,5 +78,21 @@ object Util {
     }
   }
 
+  def trimCr( s:String ) = {
+
+    def tc( l:List[String] ):List[String] = l match {
+      case Nil => Nil
+      case x::Nil => x::Nil
+      case x::xs if x.trim == "" && xs.first.trim == "" => tc( xs.tail )
+      case x::xs => x::tc( xs )
+    }
+    (tc( s.lines.toList.dropWhile( _.trim == "") ) match {
+      case Nil => Nil
+      case x if x.last.trim == "" => x.reverse.tail.reverse
+      case x => x
+     }).mkString( "\n" )
+  }
+
+
   def openUrl( url:String ):Unit = loader.openUrl( url )
 }

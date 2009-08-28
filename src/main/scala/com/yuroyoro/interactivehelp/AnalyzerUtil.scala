@@ -18,7 +18,7 @@ package com.yuroyoro.interactivehelp
 import _root_.scala.xml._
 import Util._
 
-object AnalyaerUtil {
+object AnalyzerUtil {
   def getWith( n:List[Node] ):List[Node] = n match {
       case x::Nil => Nil
       case x::xs  => if( x.text.trim == "with") xs else getWith(xs )
@@ -100,7 +100,8 @@ object AnalyaerUtil {
 
   def getSummaryDescription( xml:Node ):String = {
     val d = ( xml \\ "div" )
-    if( d.isEmpty ) "" else "  " + d.text.split("\n").map( _.trim ).mkString("\n    ")
+    trimCr(
+      if( d.isEmpty ) "" else "  " + d.text.lines.map( _.trim ).mkString("\n    "))
   }
 
   def analizeMethodSigniture( xml:Node ):(
@@ -124,10 +125,23 @@ object AnalyaerUtil {
   }
 
   def getDetailDescription( det:List[Node] ):String = {
-    det.filter( e => e.label == "dl" ).
-      map( e => "\n  " +
-          ( e \ "dt" ).text.split( "\n" ).map( s => s.trim ).mkString( " ") + "\n  " +
-          ( e \ "dl" ).text.split( "\n" ).map( s => s.trim ).mkString("\n  ")
-      ).mkString("\n")
+    def trimLine( l:String ) =
+      l.lines.filter( s => s.trim != "" ).map( _.trim ).toList
+
+    def joinLine( l:List[String], indent:Int  ) = {
+      val sp = " " * indent
+      sp + l.mkString("\n" + sp ) + "\n"
+    }
+
+    def concat( s1:String, s2:String ) =
+      ( if( s1.trim != "" ) s1 + "\n" else "" ) +
+      ( if( s2.trim != "" ) s2 + "\n" else "" )
+
+    trimCr(
+      det.filter( e => e.label == "dl" ).
+        map( e =>{ concat(
+            trimLine( ( e \ "dt" ).text ).mkString(" ") ,
+            joinLine( trimLine( ( e \ "dd" ).text ) , 2)
+        ) }).mkString(""))
   }
 }

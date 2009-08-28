@@ -36,7 +36,6 @@ object DocumentLoader{
       case _ => FileDocumentLoader( scalaHome + "/doc/api/")
     }
   }
-
 }
 
 abstract case class DocumentLoader {

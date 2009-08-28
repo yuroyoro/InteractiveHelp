@@ -26,7 +26,7 @@ trait ScalaDoc extends Document {
        traitsDocs,  // tarit classes documents
        valueDocs,   // values documents
        methodDocs   // methods documents
-   ) =  ClassAnalyaer( path )
+   ) =  ClassAnalyzer( path )
 
   def displayString = header
 
@@ -39,8 +39,8 @@ trait ScalaDoc extends Document {
   override def et:Document = {
     def supers( doc:Document ):List[Document] = {
       doc.e match{
-        case NoneDocument(_) => Nil
-        case s:Document if s.name == "Any" => s::Nil
+        case s:NoneDocument => Nil
+        case s:Document if s.fqcn == "scala.Any" => s::Nil
         case s:Document => s::supers( s )
       }
     }
@@ -51,9 +51,9 @@ trait ScalaDoc extends Document {
   override def s(i:Int ):Document = subclassDoc(i)
   override def s(name:String):Document = searchDocument( subclassDoc , name )
 
-  override def v:Document= null // TODO
-  override def v(i:Int):Document= null // TODO
-  override def v(name:String):Document = null // TODO
+  override def v:Document= valueDocs
+  override def v(i:Int):Document= valueDocs(i)
+  override def v(name:String):Document = valueDocs(name)
   override def m:Document = methodDocs
   override def m(i:Int):Document = methodDocs(i)
   override def m(name:String):Document = methodDocs(name)
