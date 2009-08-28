@@ -16,16 +16,33 @@
 package com.yuroyoro.interactivehelp
 
 import _root_.scala.xml.NodeSeq
+import Util._
 
-case class MethodSeq( theSeq:Seq[MethodDoc] )
-  //extends ScalaDoc with Seq[MethodDoc]
-{
+case class MethodDoc(
+  fqcn:String,
+  path:String,
+  name:String,
+  sig:String,
+  header:String,
+  desc:String,
+  returnClass:Document,
+  paramClass:Document
+) extends Document {
+  def kind:String = "Method"
+  override def shortDesc = "%s\n  %s\n".format( sig , header )
+  def displayString:String = shortDesc
 
-  //def length = theSeq.length
-  //override def elements = theSeq.elements
-  //override def apply(i: Int):MethodDoc = theSeq.apply(i)
+  override def apply(i:Int):Document = this
+  override def apply(name:String):Document = this
+  override def apply(name:Symbol):Document = this
+
+  override def m:Document= this
+  override def m(i:Int):Document = this
+  override def m(name:String):Document = this
+
+  override def r:Document = returnClass
+  override def p:Document = paramClass
+
+  override def o():Unit = openUrl( path )
 
 }
-case class MethodDoc( sXml:NodeSeq, dXml:NodeSeq )
-  //extends ScalaDoc{
-//}

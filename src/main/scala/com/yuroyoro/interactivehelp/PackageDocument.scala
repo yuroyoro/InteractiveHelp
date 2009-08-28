@@ -22,6 +22,7 @@ case class PackageDocument(name:String, path:String ) extends Document {
   def desc = name
   def kind = "Package"
   def fqcn = name
+  def displayString = kind +" " + fqcn
   lazy val xml = loader.loadXml( path )
 
   val classes =

@@ -15,11 +15,13 @@
  */
 package com.yuroyoro.interactivehelp
 
-import _root_.scala.io.Source
+import _root_.scala.io.{Source, BufferedSource}
 import _root_.scala.xml.NodeSeq
 import _root_.scala.xml.parsing.XhtmlParser
 
 import java.io.File
+import java.awt.Desktop
+import java.net.URI
 
 object DocumentLoader{
   val documentUrl = "http://www.scala-lang.org/docu/files/api/"
@@ -34,17 +36,30 @@ object DocumentLoader{
       case _ => FileDocumentLoader( scalaHome + "/doc/api/")
     }
   }
+
 }
 
 abstract case class DocumentLoader {
+  val docHome:String
   def source( relPath:String ):Source
   def loadXml( relPath:String ):NodeSeq = {
-    //println( "load file : " + relPath )
-    XhtmlParser( source( relPath ) )
+    val src = source( relPath )
+    try{
+      XhtmlParser(src)
+    }finally{
+      // FIXME: how to closing Source object?
+      src.asInstanceOf[BufferedSource].close
+    }
   }
+
+  val urlHome:String = docHome
+  def normalizePath( path:String ) = path.split("/").filter( _ != "..").mkString("/")
+  lazy val desktop = Desktop.getDesktop
+  def openUrl( url:String ):Unit = desktop.browse(new URI( urlHome + normalizePath( url)))
 }
 
 case class FileDocumentLoader( docHome:String) extends DocumentLoader{
+  override val urlHome = "file://" + docHome
   def source( relPath:String ):Source = Source.fromFile( docHome + relPath )
 }
 case class UrlDocumentLoader( docHome:String) extends DocumentLoader{

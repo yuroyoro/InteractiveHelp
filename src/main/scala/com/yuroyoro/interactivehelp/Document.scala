@@ -22,6 +22,11 @@ trait Document {
   def desc:String
   def fqcn:String
   def shortDesc = "%s %s".format( kind, desc )
+  def displayString:String
+  override def toString = {
+    println( displayString )
+    kind
+  }
   def apply(i:Int):Document
   def apply(name:String):Document
   def apply(name:Symbol):Document
@@ -56,18 +61,24 @@ trait Document {
   def r:Document = NoneDocument("return type")
   def returnType = r
 
+  def p:Document = NoneDocument("param type")
+  def paramType = r
+
   def t:Document = NoneDocument( "traits")
   def t(i:Int):Document = NoneDocument( "traits")
   def t(name:String):Document = NoneDocument( "traits")
   def traits = t
   def traits(i:Int) = t(i)
   def traits(name:String) = t(name)
+
+  def o():Unit = {}
 }
 
 case class NoneDocument( name:String) extends Document{
   def kind:String = "None"
   def desc:String = "not found " + name
   def fqcn:String = ""
+  def displayString = desc
   def apply(i:Int):Document = this
   def apply(name:String):Document = this
   def apply(name:Symbol):Document = this
@@ -86,7 +97,7 @@ class DocumentSeq( theSeq:Seq[Document])
   def apply(name:String):Document = searchDocument(this, name)
   def apply(name:Symbol):Document = null // TODO
 
-  override def toString = length match {
+  def displayString = length match {
       case 0 => ""
       case _ => indent + toLines + indent
   }

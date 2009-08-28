@@ -16,6 +16,7 @@
 package com.yuroyoro.interactivehelp
 
 import Indexies._
+import Util._
 
 object Export{
 
@@ -28,10 +29,11 @@ Usage:
 
   /** find scaladoc by name.  */
   def h(name:String):Document = {
-    result( name,
+    seqToDocument(
       classIndexies.filter( i=> i.name == name || i.fqcn == name ) ++
       objectIndexies.filter( i => i.name == name || i.fqcn == name ) ++
-      packageIndexies.filter( i => i.name == name )
+      packageIndexies.filter( i => i.name == name ),
+      name
     )
   }
   /** search scaladoc by name */
@@ -52,21 +54,14 @@ Usage:
 
   /** find object documents by name.*/
   def oh( name:String ):Document =
-    result( name, objectIndexies.filter( i => i.name == name || i.fqcn == name ) )
+    seqToDocument( objectIndexies.filter( i => i.name == name || i.fqcn == name ) , name)
 
   /** find class documents by name.*/
   def ch( name:String ):Document =
-    result( name, objectIndexies.filter( i => i.name == name || i.fqcn == name ) )
+    seqToDocument( classIndexies.filter( i => i.name == name || i.fqcn == name ) , name)
 
   /** find package documents by name.*/
   def ph( name:String ):Document =
-    result( name, objectIndexies.filter( i => i.name == name || i.fqcn == name ) )
+    seqToDocument( packageIndexies.filter( i => i.name == name || i.fqcn == name ) , name)
 
-  private def result( name:String, res:Seq[Document] ):Document = {
-    res size match {
-      case 0 => NoneDocument( name )
-      case 1 => res.first
-      case _ => new DocumentSeq( res )
-    }
-  }
 }

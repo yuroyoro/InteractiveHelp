@@ -28,15 +28,15 @@ trait ScalaDoc extends Document {
        methodDocs   // methods documents
    ) =  ClassAnalizer( path )
 
-  override def toString = header
+  def displayString = header
 
-  def apply(i:Int) = null //TODO  m(i)
-  def apply(name:String) = null //TODO m(name)
-  def apply(name:Symbol):Document = null //TODO m(name)
+  def apply(i:Int) = m(i)
+  def apply(name:String) = m(name)
+  def apply(name:Symbol):Document = m(name)
 
   def path:String
   override def e:Document = extendsDoc
-  override def et:DocumentSeq = null // TODO
+  override def et:Document = null // TODO
 
   override def s:Document = subclassDoc
   override def s(i:Int ):Document = subclassDoc(i)
@@ -45,12 +45,15 @@ trait ScalaDoc extends Document {
   override def v:Document= null // TODO
   override def v(i:Int):Document= null // TODO
   override def v(name:String):Document = null // TODO
-  override def m:DocumentSeq = null // TODO
-  override def m(i:Int):Document = null // TODO
-  override def m(name:String):DocumentSeq = null // TODO
+  override def m:Document = methodDocs
+  override def m(i:Int):Document = methodDocs(i)
+  override def m(name:String):Document = methodDocs(name)
   override def t:Document = traitsDocs
   override def t(i:Int):Document = traitsDocs(i)
   override def t(name:String):Document = searchDocument( traitsDocs, name )
+
+  override def o():Unit = openUrl( path )
+
 }
 
 case class ClassDocument(pkg:String, fqcn:String, name:String, path:String, desc:String)
