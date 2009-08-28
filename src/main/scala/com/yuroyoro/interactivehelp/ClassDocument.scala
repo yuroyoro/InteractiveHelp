@@ -36,7 +36,16 @@ trait ScalaDoc extends Document {
 
   def path:String
   override def e:Document = extendsDoc
-  override def et:Document = null // TODO
+  override def et:Document = {
+    def supers( doc:Document ):List[Document] = {
+      doc.e match{
+        case NoneDocument(_) => Nil
+        case s:Document if s.name == "Any" => s::Nil
+        case s:Document => s::supers( s )
+      }
+    }
+    listToDocument( supers( this ).reverse , "super classes" )
+  }
 
   override def s:Document = subclassDoc
   override def s(i:Int ):Document = subclassDoc(i)
