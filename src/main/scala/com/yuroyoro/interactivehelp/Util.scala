@@ -24,8 +24,15 @@ object Util {
   def packageName( path:String ) = ("""([^/]+)""".r findAllIn path).
         toList.reverse.tail.reverse.filter( _ != "..").mkString(".")
 
+  def parentPackage( fqcn:String ) =
+    fqcn.split("""\.""").reverse.toList.tail.reverse.mkString(".")
+
   /** get class name without type parameters. */
-  def className( name:String ) = ( """([^.]+)""".r findAllIn name ).toList.last
+  def className( name:String ) =
+    ( """([^.]+)""".r findAllIn removeTypeParam( name ) ).toList.last
+
+  /** remove type paremeters. */
+  def removeTypeParam( name:String ) = """(\[.+\])""".r.replaceAllIn( name, "")
 
   /** is filepath link to object? */
   def isObject( path:String ) = """\$object\.html""".r findAllIn path hasNext
@@ -98,6 +105,8 @@ object Util {
      }).mkString( "\n" )
   }
 
+  def convertJavaClassName( s:String ) =
+    ( if( s.endsWith( "$" ) ) s.reverse.drop(1).reverse.toString else s).replace("$", ".")
 
   def openUrl( url:String ):Unit = loader.openUrl( url )
 }

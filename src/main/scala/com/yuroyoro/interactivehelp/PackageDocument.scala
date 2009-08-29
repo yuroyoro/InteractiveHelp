@@ -17,12 +17,12 @@ package com.yuroyoro.interactivehelp
 
 import Util._
 
-case class PackageDocument(name:String, path:String ) extends Document {
+case class PackageDocument(name:String, path:String, fqcn:String ) extends Document {
 
-  def desc = name
+  def desc = fullname
   def kind = "Package"
-  def fqcn = name
-  def displayString =  kind +" " + fqcn + "\n" + classes.displayString
+  def fullname = fqcn + "." + name
+  def displayString =  kind + " " + fullname + "\n" + classes.displayString
 
   lazy val xml = loader.loadXml( path )
 

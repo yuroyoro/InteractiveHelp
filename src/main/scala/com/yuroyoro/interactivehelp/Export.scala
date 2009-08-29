@@ -15,6 +15,8 @@
  */
 package com.yuroyoro.interactivehelp
 
+import scala.reflect.Manifest
+
 import Indexies._
 import Util._
 
@@ -27,30 +29,48 @@ Usage:
 """)
   }
 
+  def matchName( name:String , d:Document) = {
+      d.name == name || d.pkg == name || d.fqcn == name }
+
+  def startsWithName( name:String , d:Document ) = {
+      d.name.startsWith( name ) || d.pkg.startsWith( name ) ||
+      d.fqcn.startsWith( name ) }
+
   /** find scaladoc by name.  */
-  def h(name:String):Document = {
+  def h( name:String ):Document = {
+    val f = matchName( name, _:Document )
     seqToDocument(
-      classIndexies.filter( i=> i.name == name || i.fqcn == name ) ++
-      objectIndexies.filter( i => i.name == name || i.fqcn == name ) ++
-      packageIndexies.filter( i => i.name == name ),
+      classIndexies.filter( f ) ++
+      objectIndexies.filter( f ) ++
+      packageIndexies.filter( f ),
       name
     )
   }
+  def help( name:String ) = h( name )
+
   /** search scaladoc by name */
   def h( name:Symbol ):Document ={
-    // TODO
-    NoneDocument("TODO")
+    val n = name.toString.drop(1)
+    val f = startsWithName( n, _:Document )
+    seqToDocument(
+      classIndexies.filter( f ) ++
+      objectIndexies.filter( f ) ++
+      packageIndexies.filter( f ),
+      n
+    )
   }
+  def help( name:Symbol ) = h( name )
+
   /** search scaladoc by name */
-  def h[T]( name:Class[T] ):Document ={
-    // TODO
-    NoneDocument("TODO")
+  def h[T](obj:T)( implicit m: Manifest[T] ):Document = {
+    val name = removeTypeParam( className( m.toString ) )
+
+    if( name.endsWith( "$" ) )
+      oh( convertJavaClassName( name ) )
+    else
+      ch( convertJavaClassName( name ) )
   }
-  /** search scaladoc by Object */
-  def h( name:AnyRef ):Document ={
-    // TODO
-    NoneDocument("TODO")
-  }
+  def help[T]( obj:T )( implicit m: Manifest[T] ):Document = h( obj )( m )
 
   /** find object documents by name.*/
   def oh( name:String ):Document =

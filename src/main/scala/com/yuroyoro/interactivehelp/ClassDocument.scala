@@ -68,13 +68,13 @@ trait ScalaDoc extends Document {
 
 }
 
-case class ClassDocument(pkg:String, fqcn:String, name:String, path:String, desc:String)
+case class ClassDocument( fqcn:String, name:String, path:String, desc:String)
   extends ScalaDoc {
   def kind = "Class"
   override def shortDesc = "%s %s".format( kind, fqcn)
 }
 
-case class ObjectDocument(pkg:String, fqcn:String, name:String, path:String, desc:String)
+case class ObjectDocument( fqcn:String, name:String, path:String, desc:String)
   extends ScalaDoc {
   def kind = "Object"
   override def shortDesc = "%s %s".format( kind, fqcn)

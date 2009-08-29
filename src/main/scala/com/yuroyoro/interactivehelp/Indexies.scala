@@ -32,7 +32,7 @@ object Indexies{
            path = li \\ "a" \ "@href" text;
            pkg = packageName(path);
            fqcn = pkg + "." + name)yield{
-          ClassDocument(pkg, fqcn, className( name ) , path, desc )
+          ClassDocument( fqcn, className( name ) , path, desc )
       } ,
       // Init Object indexies
       for( li <- (xml \\ "ul").last \\ "li";
@@ -41,13 +41,13 @@ object Indexies{
            path = li \\ "a" \ "@href" text;
            pkg = packageName(path);
            fqcn = pkg + "." + name)yield{
-          ObjectDocument(pkg, fqcn, className( name ) , path, desc )
+          ObjectDocument( fqcn, className( name ) , path, desc )
       },
       // Init package indexies
       for( a <- pxml \\ "a";
            name = a.text.trim;
            path = a \ "@href" text)yield{
-          PackageDocument( name, path)
+          PackageDocument( className( name ), path, parentPackage( name ))
       }
     )
   }

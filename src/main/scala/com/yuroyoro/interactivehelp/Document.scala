@@ -22,6 +22,7 @@ trait Document extends Seq[Document] {
   def elements = Seq[Document]().elements
   def kind:String
   def desc:String
+  def pkg:String = parentPackage( fqcn )
   def fqcn:String
   def name:String
   def shortDesc = "%s %s".format( kind, desc )
@@ -83,6 +84,7 @@ trait Document extends Seq[Document] {
 case class NoneDocument( name:String) extends Document{
   def kind:String = "None"
   def desc:String = "not found " + name
+  override def pkg:String = "None"
   def fqcn:String = ""
   def displayString = desc
   def apply(i:Int):Document = this
@@ -94,6 +96,7 @@ class DocumentSeq( theSeq:Seq[Document] ) extends Document {
 
   def kind:String = "Seq"
   def desc:String = "found %d".format( theSeq.size )
+  override def pkg:String = "None"
   def fqcn:String = ""
   override def name = desc
   val indent = "\n  "
@@ -115,7 +118,6 @@ class DocumentSeq( theSeq:Seq[Document] ) extends Document {
 }
 
 trait NoCrDisplay extends Document {
-  override def toString = {
-    "[" + trimCr( displayString ).replace( "\n", ", " ) + "]"
-  }
+  override def toString = "[" + trimCr( displayString ).replace( "\n", ", " ) + "]"
+
 }

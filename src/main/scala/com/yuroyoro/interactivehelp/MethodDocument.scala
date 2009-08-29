@@ -44,5 +44,4 @@ case class MethodDoc(
   override def p:Document = paramClass
 
   override def o():Unit = openUrl( path )
-
 }
