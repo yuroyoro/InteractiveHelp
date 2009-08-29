@@ -30,11 +30,17 @@ Usage:
   }
 
   def matchName( name:String , d:Document) = {
-      d.name == name || d.pkg == name || d.fqcn == name }
+      d.name.compareToIgnoreCase( name ) == 0 ||
+      d.pkg.compareToIgnoreCase( name ) == 0 ||
+      d.fqcn.compareToIgnoreCase( name ) == 0 }
+
+  def startsWithIgnoreCase( s1:String, s2:String ) =
+    s1.toLowerCase.startsWith( s2.toLowerCase )
 
   def startsWithName( name:String , d:Document ) = {
-      d.name.startsWith( name ) || d.pkg.startsWith( name ) ||
-      d.fqcn.startsWith( name ) }
+    startsWithIgnoreCase( d.name, name ) ||
+    startsWithIgnoreCase( d.pkg, name ) ||
+    startsWithIgnoreCase( d.fqcn, name )}
 
   /** find scaladoc by name.  */
   def h( name:String ):Document = {
