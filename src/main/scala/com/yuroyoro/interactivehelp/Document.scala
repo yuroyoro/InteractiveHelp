@@ -30,9 +30,12 @@ trait Document extends Seq[Document] {
     println( trimCr( displayString ) )
     kind
   }
+
   def apply(i:Int):Document
   def apply(name:String):Document
   def apply(name:Symbol):Document
+
+  def l:Document = this
 
   def e:Document = NoneDocument( "Super class")
   def exntedsClass:Document = e
@@ -87,7 +90,7 @@ case class NoneDocument( name:String) extends Document{
   def apply(name:Symbol):Document = this
 }
 
-class DocumentSeq( theSeq:Seq[Document]) extends Document {
+class DocumentSeq( theSeq:Seq[Document] ) extends Document {
 
   def kind:String = "Seq"
   def desc:String = "found %d".format( theSeq.size )
@@ -107,4 +110,12 @@ class DocumentSeq( theSeq:Seq[Document]) extends Document {
   def toLines:String = List.range(0 , length ).
     zip( theSeq.toList ).
     map( e => "%2d:%s".format(e._1, e._2.shortDesc )).mkString( indent )
+
+  override def l:Document = new DocumentSeq( theSeq ) with NoCrDisplay
+}
+
+trait NoCrDisplay extends Document {
+  override def toString = {
+    "[" + trimCr( displayString ).replace( "\n", ", " ) + "]"
+  }
 }
