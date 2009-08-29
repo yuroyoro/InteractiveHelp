@@ -66,6 +66,11 @@ object Util {
     case d:ScalaDoc => if( d.fqcn == name )d else NoneDocument( name )
   }
 
+  /** Utility method search Document starts with  name */
+  def searchDocument( doc:Document, name:Symbol ) =
+    seqToDocument( doc.filter( d =>
+      d.name.startsWith( name.toString.drop(1) ) ), name.toString)
+
   def seqToDocument( seq:Seq[Document], name:String ):Document = {
     listToDocument( seq.toList, name )
   }

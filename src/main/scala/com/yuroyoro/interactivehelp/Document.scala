@@ -98,7 +98,7 @@ class DocumentSeq( theSeq:Seq[Document]) extends Document {
   override def elements = theSeq.elements
   def apply(i:Int):Document = theSeq.apply(i)
   def apply(name:String):Document = searchDocument(this, name)
-  def apply(name:Symbol):Document = null // TODO
+  def apply(name:Symbol):Document = searchDocument(this, name)
 
   def displayString = length match {
       case 0 => ""
