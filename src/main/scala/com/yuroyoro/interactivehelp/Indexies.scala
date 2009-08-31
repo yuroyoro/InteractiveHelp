@@ -34,7 +34,6 @@ object Indexies{
        }) + "/doc/api/"
       case x => x
     }
-    println( scalaDocHome )
     scalaDocHome
   }
 

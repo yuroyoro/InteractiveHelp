@@ -53,6 +53,14 @@ object Util {
   /** is path link to Type parameter? */
   def isTypeParam( path:String) = """\.html\#[\S]+$""".r findAllIn path hasNext
 
+  def matchName( name:String , d:Document) = {
+      d.name.compareToIgnoreCase( name ) == 0 ||
+      d.pkg.compareToIgnoreCase( name ) == 0 ||
+      d.fqcn.compareToIgnoreCase( name ) == 0 }
+
+  def startsWithIgnoreCase( s1:String, s2:String ) =
+    s1.toLowerCase.startsWith( s2.toLowerCase )
+
   /** opne url on browser */
   lazy val desktop = Desktop.getDesktop
   def open( url:String ):Unit = desktop.browse( new URI( url ) )
@@ -78,7 +86,7 @@ object Util {
     case n:NoneDocument => NoneDocument(name)
     case seq:DocumentSeq => {
       val res = seq.filter(e => e match {
-          case s:ScalaDoc => ( s.fqcn == name )
+          case s:Document => ( matchName( name, s) )
           case _ => false })
       seqToDocument( res, name )
     }

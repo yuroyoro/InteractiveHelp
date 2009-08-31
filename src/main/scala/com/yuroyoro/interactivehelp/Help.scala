@@ -20,7 +20,7 @@ import scala.reflect.Manifest
 import Indexies._
 import Util._
 
-object Export{
+object Help{
 
   def h():Unit = {
     // TODO usage
@@ -29,13 +29,6 @@ Usage:
 """)
   }
 
-  def matchName( name:String , d:Document) = {
-      d.name.compareToIgnoreCase( name ) == 0 ||
-      d.pkg.compareToIgnoreCase( name ) == 0 ||
-      d.fqcn.compareToIgnoreCase( name ) == 0 }
-
-  def startsWithIgnoreCase( s1:String, s2:String ) =
-    s1.toLowerCase.startsWith( s2.toLowerCase )
 
   def startsWithName( name:String , d:Document ) = {
     startsWithIgnoreCase( d.name, name ) ||
@@ -79,16 +72,37 @@ Usage:
   def help[T]( obj:T )( implicit m: Manifest[T] ):Document = h( obj )( m )
 
   /** find object documents by name.*/
-  def oh( name:String ):Document =
-    seqToDocument( objectIndexies.filter( i => i.name == name || i.fqcn == name ) , name)
+  def oh( name:String ):Document = {
+    val f = matchName( name, _:Document )
+    seqToDocument( objectIndexies.filter( f ), name)
+  }
+  def oh( name:Symbol ):Document ={
+    val n = name.toString.drop(1)
+    val f = startsWithName( n, _:Document )
+    seqToDocument( objectIndexies.filter( f ), n)
+  }
 
   /** find class documents by name.*/
-  def ch( name:String ):Document =
-    seqToDocument( classIndexies.filter( i => i.name == name || i.fqcn == name ) , name)
+  def ch( name:String ):Document = {
+    val f = matchName( name, _:Document )
+    seqToDocument( classIndexies.filter( f ), name)
+  }
+  def ch( name:Symbol ):Document ={
+    val n = name.toString.drop(1)
+    val f = startsWithName( n, _:Document )
+    seqToDocument( classIndexies.filter( f ), n)
+  }
 
   /** find package documents by name.*/
-  def ph( name:String ):Document =
-    seqToDocument( packageIndexies.filter( i => i.name == name || i.fqcn == name ) , name)
+  def ph( name:String ):Document = {
+    val f = matchName( name, _:Document )
+    seqToDocument( packageIndexies.filter( f ), name)
+  }
+  def ph( name:Symbol ):Document ={
+    val n = name.toString.drop(1)
+    val f = startsWithName( n, _:Document )
+    seqToDocument( packageIndexies.filter( f ), n)
+  }
 
   def addFiles( paths:String* ) = paths.foreach( path => Indexies.docPath += path )
   def addUrls( paths:String* ) = paths.foreach( path => Indexies.docUrl += path )
