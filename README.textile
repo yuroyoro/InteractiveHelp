@@ -1,44 +1,44 @@
 h2. InteractiveHelp -- scaladoc seach tool on scala interpreter.
 
-InteractiveHelpは、scalaインタプリタ上でscaladocを検索できるように
-するツールです。
+InteractiveHelpは、scalaインタプリタ上でscaladocを検索できるように するツールです。
 
-インタプリタ上でコマンドを入力することで、クラスやメソッドや
-パッケージのドキュメントを参照することができます。
+インタプリタ上でコマンドを入力することで、クラスやメソッドや パッケージのドキュメントを参照することができます。
 
 h2. インストール
 
 InteractiveHelpは、Java6以上と、scala2.8.5finalで動作します。
 インストールの手順は、以下のとおりです。
 
-- ソースコードをダウンロードします。
-  gitが利用できる環境であれば、任意のディレクトリで以下のコマンドを
-  入力することでソースコードを取得することができます。
-  <pre>
-  $ git clone git://github.com/yuroyoro/interactivehelp.git
-  </pre>
-  gitが利用できない場合はこのページの上にある"download"ボタンを
-  クリックして圧縮ファイルを取得し、任意のディレクトリに解凍します。
+h3. ソースコードをダウンロードします。
 
-- 添付のScalaDocを解凍します。
-  ソースコードに含まれているscala-2.7.5-apidocs-fixed.zipを解凍します。
-  InteractiveHelpでは、scaladocをXHTMLとして読み込み検索するようになっていますが、
-  標準のscala api documentの一部はXHTMLとして読み込むとエラーになるので、
-  修正したものを利用します。
+gitが利用できる環境であれば、任意のディレクトリで以下のコマンドを 入力することでソースコードを取得することができます。
 
-- 環境変数SCALA_DOC_HOMEを設定します。
-  解凍して出来たディレクトリを、環境変数SCALA_DOC_HOMEに設定します。
+<pre>
+$ git clone git://github.com/yuroyoro/interactivehelp.git
+</pre>
+
+gitが利用できない場合はこのページの上にある"download"ボタンを クリックして圧縮ファイルを取得し、任意のディレクトリに解凍します。
+
+h3. 添付のScalaDocを解凍します。
+
+ソースコードに含まれているscala-2.7.5-apidocs-fixed.zipを解凍します。
+InteractiveHelpでは、scaladocをXHTMLとして読み込み検索するようになっていますが、標準のscala api documentの一部はXHTMLとして読み込むとエラーになるので、修正したものを利用します。
+
+h3. 環境変数SCALA_DOC_HOMEを設定します。
+
+解凍して出来たディレクトリを、環境変数SCALA_DOC_HOMEに設定します。
+
 
 以上で設定は完了です。
 
 h2. 使い方
 
-scalaインタプリタを起動する際に、interactive-help-1.0.jarを
-クラスパスに入れて起動します
+scalaインタプリタを起動する際に、interactive-help-1.0.jarをクラスパスに入れて起動します
 
 <pre>
 $ scala -cp ./interactive-help-1.0.jar
 </pre>
+
 
 次に、Helpオブジェクトをインポートします。
 
@@ -46,8 +46,8 @@ $ scala -cp ./interactive-help-1.0.jar
 scala> import com.yuroyoro.interactivehelp.Export._
 </pre>
 
-これでヘルプが利用できるようになりました。
-以下のように入力してみましょう。
+
+これでヘルプが利用できるようになりました。以下のように入力してみましょう。
 
 <pre>
 scala> h("List")
@@ -56,6 +56,7 @@ scala> h("List")
 
    res0: com.yuroyoro.interactivehelp.Document = Seq
 </pre>
+
 
 "List"に一致するクラス/オブジェクトの一覧が表示されました。
 Listクラスの詳細を調べたい場合は以下のように入力します。
@@ -75,6 +76,7 @@ sealed abstract class List[+A]
 ================================================================
 </pre>
 
+
 このように、Listクラスの詳細が出力されます。
 Listクラスのもつメソッドを調べたい場合は、続けてmと入力します。
 
@@ -86,9 +88,9 @@ scala> h("List")(0).m
   ...
 </pre>
 
+
 メソッドの一覧が出力されました。
-さらに、個々のメソッドの詳細をみたい場合は、対応する番号を
-続けて指定すればOKです。
+さらに、個々のメソッドの詳細をみたい場合は、対応する番号を続けて指定すればOKです。
 
 <pre>
 scala> h("List")(0).m(1)
@@ -99,11 +101,11 @@ Overrides
   Seq.++
 </pre>
 
-このように、コマンドを入力することでscaladocを検索することが
-可能です。
 
-さらに、つづけて.oと入力すると、ブラウザが起動して対応するscaladocを
-見ることが可能です。
+このように、コマンドを入力することでscaladocを検索することが可能です。
+
+
+さらに、つづけて.oと入力すると、ブラウザが起動して対応するscaladocを見ることが可能です。
 
 <pre>
 scala> h("List")(0).m(1).o
@@ -114,22 +116,22 @@ scala> h("List")(0).m(1).o
 
 h2. もっと簡単に使うには
 
-毎回scalaインタプリタを起動するたびに、クラスパスを指定して、
-importを入力するのは面倒ですよね。
+毎回scalaインタプリタを起動するたびに、クラスパスを指定して、importを入力するのは面倒ですよね。
 
-scalaコマンドのエイリアスをこのように指定しておくと、
-常にヘルプが利用可能な状態でインタプリタが起動します。
+
+scalaコマンドのエイリアスをこのように指定しておくと、常にヘルプが利用可能な状態でインタプリタが起動します。
 
 <pre>
 alias -i <InteraciveHelpのパス>/import.scala -cp <InteraciveHelpのパス>/interactive-help-1.0.jar
 </pre>
 
+
 h2. コマンド一覧
 
 InteractiveHelpがサポートするコマンドは以下の通りです。
 
-コマンドが引数を取る場合は、Int、String, Symbolのいづれかを
-指定することが可能です。
+
+コマンドが引数を取る場合は、Int、String, Symbolのいづれかを指定することが可能です。
 
 Intの場合はN番目の要素を表示します。
 Stringの場合はクラス名やメソッド名などが完全一致するものを返します。
@@ -142,15 +144,16 @@ Symbolの場合は、クラス名などが前方一致するものを返しま�
 |oh         |Int/String/Symbol|オブジェクトを検索します。|
 |ph         |Int/String/Symbol|パッケージを検索します。|
 
-検索結果が複数ある場合は、さらにInt、String, Symbolのいづれかを
-指定して絞り込むことが可能です。
+
+検索結果が複数ある場合は、さらにInt、String, Symbolのいづれかを指定して絞り込むことが可能です。
+
 
 また、List("scala").lとすると、改行せずに一覧を出力します。
-検索結果はすべてSeq[Document]型ですので、mapやfilterなどが
-利用できます。
+検索結果はすべてSeq[Document]型ですので、mapやfilterなどが利用できます。
 
-検索結果が1件になると、そのクラスやオブジェクトの詳細が
-表示されます。
+
+検索結果が1件になると、そのクラスやオブジェクトの詳細が表示されます。
+
 
 この状態では、さらに以下のコマンドを指定することができます。
 
@@ -168,6 +171,7 @@ Symbolの場合は、クラス名などが前方一致するものを返しま�
 |v          |なし             |valueの一覧を返します。|
 |v          |Int/String/Symbol|valueの一覧を検索します。|
 
+
 Value, メソッドに対してはさらに以下のコマンドを利用できます。
 
 |_. コマンド|_. 引数          |_. 説明|
@@ -175,38 +179,45 @@ Value, メソッドに対してはさらに以下のコマンドを利用でき�
 |p          |なし             |メソッドのみ。引数の型の一覧を返します。|
 |p          |Int/String/Symbol|メソッドのみ。引数の型の一覧を検索します。|
 
+
 h2. 他のscaladocを検索できるようにするには
 
-他のscaladocを検索できるようにするには、以下のように
-addFilesメソッドでscaladocのあるディレクトリを指定します。
+他のscaladocを検索できるようにするには、以下のようにaddFilesメソッドでscaladocのあるディレクトリを指定します。
 
 <pre>
-  scala> addFiles( "/your_scaladoc_path/", "/your_scaladoc_path2"...)
+scala> addFiles( "/your_scaladoc_path/", "/your_scaladoc_path2"...)
 </pre>
+
 
 addUrlsでは、URLを追加することでhttpでドキュメントを取得出来ます。
 
 <pre>
-  scala> addUrls("http://somedoc.url", ...)
+scala> addUrls("http://somedoc.url", ...)
 </pre>
 
-注意しなければならないのは、追加するHTMLファイルはXHTMLとして解釈できるもので
-なければならないと言うことです。
+
+注意しなければならないのは、追加するHTMLファイルはXHTMLとして解釈できるものでなければならないと言うことです。
+
 
 タグの閉じ忘れなどがあると、エラーが発生します。
+
 
 h2. ビルドするには
 
 interactivehelpをビルドするためには、java6とmaven2が必要です。
-また、ソースコードを取得するためにgitが利用できることが
-望ましいです
+また、ソースコードを取得するためにgitが利用できることが望ましいです
 
-ソースコードからinteractivehelpをビルドするには、
-単純に以下のようなmavenコマンドを入力するだけです。
+
+ソースコードからinteractivehelpをビルドするには、単純に以下のようなmavenコマンドを入力するだけです。
 
 <pre>
-  $ mvn package
+$ mvn package
 </pre>
+
 
 ビルドが終わると、targetディレクトリにjarファイルが生成されているハズです。
 
+-----
+ゆろよろ Tomohito Ozaki
+# blog   : http://d.hatena.ne.jp/yuroyoro/
+# twitter: http://twitter.com/yuroyoro/
