@@ -23,13 +23,17 @@ object MethodAnalyzer{
   def apply( loader:DocumentLoader, xml:NodeSeq , fqcn:String ):Document = {
     val sum = getMemberSummary( xml , "Method")
     val det = getMemberDetail( xml, "Method")
-    val res = sum.zip( det ).map( t  =>{
-      val s = t._1
-      val d = t._2
+    val res = sum.map( s =>{
       val sig = getSignature( s )
       val header = getSummaryDescription( s )
       val ( name, path, param, ret ) = analizeMethodSigniture( s )
-      val detail = trimCr( getDetailDescription( d ) )
+      val detail  = linkName( path ) match {
+        case "" => ""
+        case name => findDetail( name, det ) match{
+          case Nil => ""
+          case xs => trimCr( getDetailDescription( xs ) )
+        }
+      }
       MethodDoc( loader, fqcn, path, name, sig, header, detail, ret, param )
     })
 

@@ -29,6 +29,7 @@ trait Document extends Seq[Document] {
   def displayString:String
   override def toString = {
     println( trimCr( displayString ) )
+    println("")
     kind
   }
 
@@ -100,9 +101,10 @@ class DocumentSeq( val theSeq:Seq[Document] ) extends Document {
   def fqcn:String = ""
   override def name = desc
   val indent = "\n  "
-  override def length = theSeq.length
-  override def elements = theSeq.elements
-  def apply(i:Int):Document = theSeq.apply(i)
+  val seq = theSeq.toList
+  override def length = seq.length
+  override def elements = seq.elements
+  def apply(i:Int):Document = seq.apply(i)
   def apply(name:String):Document = searchDocument(this, name)
   def apply(name:Symbol):Document = searchDocument(this, name)
 
@@ -111,17 +113,18 @@ class DocumentSeq( val theSeq:Seq[Document] ) extends Document {
       case _ => indent + toLines + indent
   }
   def toLines:String = List.range(0 , length ).
-    zip( theSeq.toList ).
+    zip( seq.toList ).
     map( e => "%2d:%s".format(e._1, e._2.shortDesc )).mkString( indent )
 
-  override def l:Document = new DocumentSeq( theSeq ) with NoCrDisplay
+  override def l:Document = new DocumentSeq( seq ) with NoCrDisplay
 }
 
 trait NoCrDisplay extends Document {
   override def toString = {
-   print( "[" )
-   trimCr( displayString ).lines.foreach( print )
-   println( "]" )
-   kind
+    print( "[" )
+    trimCr( displayString ).lines.foreach( print )
+    println( "]" )
+    println("")
+    kind
   }
 }

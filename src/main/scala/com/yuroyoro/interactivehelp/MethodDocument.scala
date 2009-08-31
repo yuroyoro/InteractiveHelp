@@ -44,5 +44,5 @@ case class MethodDoc(
   override def r:Document = returnClass
   override def p:Document = paramClass
 
-  override def o:Unit = loader.openUrl( path )
+  override def o:Unit = loader.openDocument( path )
 }

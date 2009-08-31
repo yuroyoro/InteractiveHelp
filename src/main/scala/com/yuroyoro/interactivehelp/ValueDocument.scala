@@ -41,5 +41,5 @@ case class ValueDoc(
   override def v(name:String):Document= this
 
   override def r:Document = valueClass
-  override def o:Unit = loader.openUrl( path )
+  override def o:Unit = loader.openDocument( path )
 }

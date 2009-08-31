@@ -91,6 +91,18 @@ object AnalyzerUtil {
     }
   }
 
+  val linkNamePattern = """.+html\#(.+)""".r
+  def linkName( path:String ) = path match {
+    case linkNamePattern( name ) => name
+    case _ => ""
+  }
+
+  def findDetail( name:String , detail:List[List[Node]] ):List[Node] =
+    detail.find( d => d \\ "a" \\ "@name" == name ) match {
+      case Some( xs ) => xs
+      case None => Nil
+    }
+
   def getSignature( xml:Node ):String = {
      val mod =( xml \\ "td" ).first.text.trim.replace("\n", " " )
      val definition =( xml \\ "td" ).last.child.takeWhile( e => e.label != "div" ).

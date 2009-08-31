@@ -16,6 +16,9 @@
 package com.yuroyoro.interactivehelp
 
 import _root_.scala.xml.Node
+import java.awt.Desktop
+import java.net.URI
+
 import Indexies._
 
 object Util {
@@ -37,6 +40,9 @@ object Util {
   /** is filepath link to object? */
   def isObject( path:String ) = """\$object\.html""".r findAllIn path hasNext
 
+  /** is java class */
+  def isJava( name:String ) = name.startsWith("java.")||name.startsWith("javax.")
+
   /** make fqcn from filepath. */
   def getFqcn( path:String ) = ("""([^/]+)""".r findAllIn path).toList.
         filter( _ != "..").mkString(".").
@@ -47,13 +53,21 @@ object Util {
   /** is path link to Type parameter? */
   def isTypeParam( path:String) = """\.html\#[\S]+$""".r findAllIn path hasNext
 
+  /** opne url on browser */
+  lazy val desktop = Desktop.getDesktop
+  def open( url:String ):Unit = desktop.browse( new URI( url ) )
+
   /** Utility method search indexies by filepath and name */
   def fromPath( path:String, name:String):Document  = {
-    val cn = getFqcn( path )
-    val res = if( isObject( path ) ) objectIndexies.filter( _.fqcn == cn)
-     else classIndexies.filter( _.fqcn == cn)
+    if( isJava( name ) ){
+      JavaDocument( name, className( name ), path )
+    }else{
+      val cn = getFqcn( path )
+      val res = if( isObject( path ) ) objectIndexies.filter( _.fqcn == cn)
+       else classIndexies.filter( _.fqcn == cn)
 
-    seqToDocument( res, name )
+      seqToDocument( res, name )
+    }
   }
 
   /** Utility method search Document by a tag */

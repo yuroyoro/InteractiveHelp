@@ -65,7 +65,7 @@ trait ScalaDoc extends Document {
   override def t(i:Int):Document = traitsDocs(i)
   override def t(name:String):Document = searchDocument( traitsDocs, name )
 
-  override def o:Unit = loader.openUrl( path )
+  override def o:Unit = loader.openDocument( path )
 
 }
 
@@ -80,3 +80,16 @@ case class ObjectDocument( loader:DocumentLoader, fqcn:String, name:String, path
   def kind = "Object"
   override def shortDesc = "%s %s".format( kind, fqcn)
 }
+
+case class JavaDocument( fqcn:String, name:String, path:String )
+extends Document {
+  def kind:String = "JavaDoc"
+  def desc:String = fqcn
+  def displayString = desc
+  override def shortDesc = "%s %s".format( kind, fqcn)
+  def apply(i:Int):Document = this
+  def apply(name:String):Document = this
+  def apply(name:Symbol):Document = this
+  override def o:Unit = open( path )
+}
+

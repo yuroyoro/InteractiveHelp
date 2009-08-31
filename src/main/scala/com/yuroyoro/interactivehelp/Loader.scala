@@ -20,8 +20,7 @@ import _root_.scala.xml.NodeSeq
 import _root_.scala.xml.parsing.XhtmlParser
 
 import java.io.File
-import java.awt.Desktop
-import java.net.URI
+import Util._
 
 abstract case class DocumentLoader {
   val docHome:String
@@ -38,8 +37,7 @@ abstract case class DocumentLoader {
 
   val urlHome:String = docHome
   def normalizePath( path:String ) = path.split("/").filter( _ != "..").mkString("/")
-  lazy val desktop = Desktop.getDesktop
-  def openUrl( url:String ):Unit = desktop.browse(new URI( urlHome + normalizePath( url)))
+  def openDocument ( url:String ):Unit = open( urlHome + normalizePath( url))
 }
 
 case class FileDocumentLoader( docHome:String) extends DocumentLoader{
