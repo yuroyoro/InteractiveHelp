@@ -20,7 +20,7 @@ import Util._
 import AnalyzerUtil._
 
 object ValueAnalyzer {
-  def apply( xml:NodeSeq, fqcn:String ):Document = {
+  def apply(loader:DocumentLoader,  xml:NodeSeq, fqcn:String ):Document = {
     val sum = getMemberSummary( xml , "Value")
     val det = getMemberDetail( xml, "Value")
     val res = sum.zip( det ).map( t  =>{
@@ -30,7 +30,7 @@ object ValueAnalyzer {
       val header = getSummaryDescription( s )
       val ( name, path, param, ret ) = analizeMethodSigniture( s )
       val detail = getDetailDescription( d )
-      ValueDoc( fqcn, path, name, sig, header, detail, ret )
+      ValueDoc( loader, fqcn, path, name, sig, header, detail, ret )
     })
 
     listToDocument( res , "value" )

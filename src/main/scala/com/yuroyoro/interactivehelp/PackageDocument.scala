@@ -17,7 +17,8 @@ package com.yuroyoro.interactivehelp
 
 import Util._
 
-case class PackageDocument(name:String, path:String, fqcn:String ) extends Document {
+case class PackageDocument( loader:DocumentLoader, name:String, path:String, fqcn:String )
+  extends Document {
 
   def desc = fullname
   def kind = "Package"
@@ -34,4 +35,5 @@ case class PackageDocument(name:String, path:String, fqcn:String ) extends Docum
   def apply(i:Int):Document = classes(i)
   def apply(name:String):Document = classes( name )
   def apply(name:Symbol):Document = classes( name )
+  override def l:Document = classes.l
 }

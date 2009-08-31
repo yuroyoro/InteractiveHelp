@@ -92,7 +92,7 @@ case class NoneDocument( name:String) extends Document{
   def apply(name:Symbol):Document = this
 }
 
-class DocumentSeq( theSeq:Seq[Document] ) extends Document {
+class DocumentSeq( val theSeq:Seq[Document] ) extends Document {
 
   def kind:String = "Seq"
   def desc:String = "found %d".format( theSeq.size )
@@ -118,6 +118,10 @@ class DocumentSeq( theSeq:Seq[Document] ) extends Document {
 }
 
 trait NoCrDisplay extends Document {
-  override def toString = "[" + trimCr( displayString ).replace( "\n", ", " ) + "]"
-
+  override def toString = {
+   print( "[" )
+   trimCr( displayString ).lines.foreach( print )
+   println( "]" )
+   kind
+  }
 }

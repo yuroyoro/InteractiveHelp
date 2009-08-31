@@ -20,7 +20,7 @@ import Util._
 import AnalyzerUtil._
 
 object MethodAnalyzer{
-  def apply( xml:NodeSeq , fqcn:String ):Document = {
+  def apply( loader:DocumentLoader, xml:NodeSeq , fqcn:String ):Document = {
     val sum = getMemberSummary( xml , "Method")
     val det = getMemberDetail( xml, "Method")
     val res = sum.zip( det ).map( t  =>{
@@ -30,7 +30,7 @@ object MethodAnalyzer{
       val header = getSummaryDescription( s )
       val ( name, path, param, ret ) = analizeMethodSigniture( s )
       val detail = trimCr( getDetailDescription( d ) )
-      MethodDoc( fqcn, path, name, sig, header, detail, ret, param )
+      MethodDoc( loader, fqcn, path, name, sig, header, detail, ret, param )
     })
 
     listToDocument( res , "method" )

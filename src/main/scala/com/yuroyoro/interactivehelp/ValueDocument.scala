@@ -19,6 +19,7 @@ import _root_.scala.xml._
 import Util._
 
 case class ValueDoc(
+  loader:DocumentLoader,
   fqcn:String,
   path:String,
   name:String,
@@ -40,7 +41,5 @@ case class ValueDoc(
   override def v(name:String):Document= this
 
   override def r:Document = valueClass
-
-  override def o():Unit = openUrl( path )
-
+  override def o:Unit = loader.openUrl( path )
 }

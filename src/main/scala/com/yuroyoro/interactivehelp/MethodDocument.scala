@@ -19,6 +19,7 @@ import _root_.scala.xml.NodeSeq
 import Util._
 
 case class MethodDoc(
+  loader:DocumentLoader,
   fqcn:String,
   path:String,
   name:String,
@@ -43,5 +44,5 @@ case class MethodDoc(
   override def r:Document = returnClass
   override def p:Document = paramClass
 
-  override def o():Unit = openUrl( path )
+  override def o:Unit = loader.openUrl( path )
 }

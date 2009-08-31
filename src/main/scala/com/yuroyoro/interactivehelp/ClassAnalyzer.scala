@@ -21,7 +21,7 @@ import AnalyzerUtil._
 
 object ClassAnalyzer {
 
-  def apply( path:String ):(
+  def apply( path:String, loader:DocumentLoader ):(
        String,     // class description
        Document,   // inherited classes documents
        Document,   // extends class document
@@ -99,8 +99,8 @@ object ClassAnalyzer {
       analizeExtends( xml ),
       analizeSubClasses( xml ),
       analizeTrait( xml ),
-      ValueAnalyzer( xml , fqcn ),
-      MethodAnalyzer( xml , fqcn )
+      ValueAnalyzer( loader, xml , fqcn ),
+      MethodAnalyzer( loader, xml , fqcn )
     )
   }
 }

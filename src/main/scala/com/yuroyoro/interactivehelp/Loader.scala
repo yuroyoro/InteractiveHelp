@@ -23,21 +23,6 @@ import java.io.File
 import java.awt.Desktop
 import java.net.URI
 
-object DocumentLoader{
-  val documentUrl = "http://www.scala-lang.org/docu/files/api/"
-  def load = {
-    val phome = System.getProperties().getProperty("scala.home")
-    val ehome = System.getenv.get("SCALA_HOME")
-    val scalaHome = if( phome != null ) phome else ehome
-    val scalaDocHome = new File( scalaHome + "/doc/api/" )
-
-    scalaDocHome.exists match {
-      case false => UrlDocumentLoader( documentUrl )
-      case _ => FileDocumentLoader( scalaHome + "/doc/api/")
-    }
-  }
-}
-
 abstract case class DocumentLoader {
   val docHome:String
   def source( relPath:String ):Source
@@ -66,3 +51,4 @@ case class UrlDocumentLoader( docHome:String) extends DocumentLoader{
   println("You shuld download api documents and extract it to $SCALA_HOME/doc/ .")
   def source( relPath:String ):Source = Source.fromURL( docHome + relPath )
 }
+

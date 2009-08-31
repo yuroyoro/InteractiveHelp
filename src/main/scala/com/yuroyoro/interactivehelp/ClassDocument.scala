@@ -26,8 +26,9 @@ trait ScalaDoc extends Document {
        traitsDocs,  // tarit classes documents
        valueDocs,   // values documents
        methodDocs   // methods documents
-   ) =  ClassAnalyzer( path )
+   ) =  ClassAnalyzer( path, loader )
 
+  def loader:DocumentLoader
   def displayString = header
 
   override def length = m.toSeq.length
@@ -64,17 +65,17 @@ trait ScalaDoc extends Document {
   override def t(i:Int):Document = traitsDocs(i)
   override def t(name:String):Document = searchDocument( traitsDocs, name )
 
-  override def o():Unit = openUrl( path )
+  override def o:Unit = loader.openUrl( path )
 
 }
 
-case class ClassDocument( fqcn:String, name:String, path:String, desc:String)
+case class ClassDocument( loader:DocumentLoader, fqcn:String, name:String, path:String, desc:String)
   extends ScalaDoc {
   def kind = "Class"
   override def shortDesc = "%s %s".format( kind, fqcn)
 }
 
-case class ObjectDocument( fqcn:String, name:String, path:String, desc:String)
+case class ObjectDocument( loader:DocumentLoader, fqcn:String, name:String, path:String, desc:String)
   extends ScalaDoc {
   def kind = "Object"
   override def shortDesc = "%s %s".format( kind, fqcn)

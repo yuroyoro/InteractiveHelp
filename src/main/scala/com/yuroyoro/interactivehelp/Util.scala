@@ -47,8 +47,6 @@ object Util {
   /** is path link to Type parameter? */
   def isTypeParam( path:String) = """\.html\#[\S]+$""".r findAllIn path hasNext
 
-  // xml file loader object
-  lazy val loader:DocumentLoader = DocumentLoader.load
   /** Utility method search indexies by filepath and name */
   def fromPath( path:String, name:String):Document  = {
     val cn = getFqcn( path )
@@ -108,5 +106,4 @@ object Util {
   def convertJavaClassName( s:String ) =
     ( if( s.endsWith( "$" ) ) s.reverse.drop(1).reverse.toString else s).replace("$", ".")
 
-  def openUrl( url:String ):Unit = loader.openUrl( url )
 }

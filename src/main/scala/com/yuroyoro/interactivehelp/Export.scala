@@ -90,4 +90,7 @@ Usage:
   def ph( name:String ):Document =
     seqToDocument( packageIndexies.filter( i => i.name == name || i.fqcn == name ) , name)
 
+  def addFiles( paths:String* ) = paths.foreach( path => Indexies.docPath += path )
+  def addUrls( paths:String* ) = paths.foreach( path => Indexies.docUrl += path )
+
 }
