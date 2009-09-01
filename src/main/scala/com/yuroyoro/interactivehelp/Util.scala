@@ -84,13 +84,8 @@ object Util {
   /** Utility method search Document by name */
   def searchDocument(doc:Document, name:String) = doc match{
     case n:NoneDocument => NoneDocument(name)
-    case seq:DocumentSeq => {
-      val res = seq.filter(e => e match {
-          case s:Document => ( matchName( name, s) )
-          case _ => false })
-      seqToDocument( res, name )
-    }
-    case d:ScalaDoc => if( d.fqcn == name )d else NoneDocument( name )
+    case seq:DocumentSeq => seqToDocument( seq.filter(d => matchName( name, d) ), name )
+    case d:ScalaDoc => if( matchName( name, d) ) d else NoneDocument( name )
   }
 
   /** Utility method search Document starts with  name */
