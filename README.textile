@@ -6,7 +6,7 @@ InteractiveHelpは、scalaインタプリタ上でscaladocを検索できるよ�
 
 h2. インストール
 
-InteractiveHelpは、Java6以上と、scala2.8.5finalで動作します。
+InteractiveHelpは、Java6以上と、scala2.7.5finalで動作します。
 インストールの手順は、以下のとおりです。
 
 h3. ソースコードをダウンロードします。
@@ -124,6 +124,11 @@ scalaコマンドのエイリアスをこのように指定しておくと、常
 <pre>
 alias -i <InteraciveHelpのパス>/import.scala -cp <InteraciveHelpのパス>/interactive-help-1.0.jar
 </pre>
+
+
+もっと乱暴な方法は、SCALA_HOME/libにinteractive-help-1.0.jarをコピーしてしまうことです。
+これで常にクラスパスを指定しなくともinteractive-help-1.0.jarが読み込まれるようになります。
+注意点として、このようにすると他のアプリケーションを実行するときにもこのjarファイルが読み込まれてしまうことです。
 
 
 h2. コマンド一覧
